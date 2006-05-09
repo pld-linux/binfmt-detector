@@ -27,7 +27,7 @@ run Native images and vice versa).
 To narzêdzie okre¶la typ pliku wykonywalnego PE Microsoftu (natywny,
 .NET CLR) i uruchamia odpowiednie ¶rodowisko wykonawcze (Wine, Mono).
 
-Jest u¿ywane w po³±czeniu z Linuksowym binfmt, poniewa¿ samo binfmt
+Jest u¿ywane w po³±czeniu z linuksowym binfmt, poniewa¿ samo binfmt
 nie jest w stanie odró¿niæ ró¿nych typów plików PE (nie zawieraj± one
 ró¿nych "magicznych ci±gów"), a ¶rodowiska uruchomieniowe nie
 pozwalaj± uruchomiæ nieobs³ugiwanych przez siebie plików (CLR nie
