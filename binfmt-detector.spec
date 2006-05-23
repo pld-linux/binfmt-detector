@@ -2,13 +2,14 @@ Summary:	Microsoft PE executable type detector
 Summary(pl):	Detector typu plików wykonywalnych PE Microsoftu
 Name:		binfmt-detector
 Version:	0.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Base
 Source0:	http://team.pld-linux.org/~wolf/%{name}.tar.gz
 # Source0-md5:	11623bddbeb536e88c47c8a1aedc9189
 Source1:	%{name}.init
 BuildRequires:	rpmbuild(macros) >= 1.268
+Requires:	rc-scripts
 Conflicts:	wine <= 1:0.9.12-1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
