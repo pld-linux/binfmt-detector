@@ -17,9 +17,7 @@
 
 BINFMT_DIR='/proc/sys/fs/binfmt_misc'
 
-
-case "$1" in
-  start|reload|force-reload)
+start() {
 	if [ ! -f /var/lock/subsys/binfmt-detector ]; then
 		# check if binfmt_misc is not already mounted
 		if ! /bin/mount | grep -q "${BINFMT_DIR} type binfmt_misc"; then
@@ -33,21 +31,31 @@ case "$1" in
 	else
 		msg_already_running "binfmt-detector"
 	fi
-	;;
-  stop)
-        if [ -f /var/lock/subsys/binfmt-detector ]; then
+}
+
+stop() {
+	if [ -f /var/lock/subsys/binfmt-detector ]; then
 		msg_stopping "binfmt-detector"
-		echo "-1" > ${BINFMT_DIR}/windows
-		echo "-1" > ${BINFMT_DIR}/windowsPE
+		echo '-1' > ${BINFMT_DIR}/windows
+		echo '-1' > ${BINFMT_DIR}/windowsPE
 		rm -f /var/lock/subsys/binfmt-detector
 		ok
 	else
 		msg_not_running "binfmt-detector"
 	fi
+}
+
+RETVAL=0
+case "$1" in
+  start|reload|force-reload)
+  	start
+	;;
+  stop)
+  	stop
 	;;
   restart)
-    $0 stop;
-    $0 start;
+    stop
+    start
 	;;
   status)
 	;;
@@ -56,4 +64,4 @@ case "$1" in
 	exit 3
 esac
 
-exit 0
+exit $RETVAL
