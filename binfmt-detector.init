@@ -3,13 +3,13 @@
 #
 # binfmt-detector:	Microsoft PE executable type detector. User can run
 #			programs using Wine or Mono simply by clicking on them
-#			or typing /file.exe
+#			or typing ./file.exe
 #
 # chkconfig:	2345 95 10
 #
 # description:	Microsoft PE executable type detector. User can run
 #		programs using Wine or Mono simply by clicking on them
-#		or typing /file.exe
+#		or typing ./file.exe
 #
 
 # Source function library
@@ -23,25 +23,25 @@ start() {
 		if ! /bin/mount | grep -q "${BINFMT_DIR} type binfmt_misc"; then
 			/bin/mount none -t binfmt_misc /proc/sys/fs/binfmt_misc
 		fi
-		msg_starting "binfmt-detector"
+		msg_starting 'binfmt-detector'
 		echo ':windows:M::MZ::/usr/bin/binfmt-detector.sh:' > ${BINFMT_DIR}/register
 		echo ':windowsPE:M::PE::/usr/bin/binfmt-detector.sh:' > ${BINFMT_DIR}/register
 		ok
 		touch /var/lock/subsys/binfmt-detector
 	else
-		msg_already_running "binfmt-detector"
+		msg_already_running 'binfmt-detector'
 	fi
 }
 
 stop() {
 	if [ -f /var/lock/subsys/binfmt-detector ]; then
-		msg_stopping "binfmt-detector"
+		msg_stopping 'binfmt-detector'
 		echo '-1' > ${BINFMT_DIR}/windows
 		echo '-1' > ${BINFMT_DIR}/windowsPE
 		rm -f /var/lock/subsys/binfmt-detector
 		ok
 	else
-		msg_not_running "binfmt-detector"
+		msg_not_running 'binfmt-detector'
 	fi
 }
 
