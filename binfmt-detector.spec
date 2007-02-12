@@ -1,5 +1,5 @@
 Summary:	Microsoft PE executable type detector
-Summary(pl):	Detector typu plików wykonywalnych PE Microsoftu
+Summary(pl.UTF-8):   Detector typu plikÃ³w wykonywalnych PE Microsoftu
 Name:		binfmt-detector
 Version:	0.1
 Release:	3
@@ -25,15 +25,15 @@ types (since they have no different "magic string") and runtimes
 refuse to run files which they don't support (CLR runtimes refuse to
 run Native images and vice versa).
 
-%description -l pl
-To narzêdzie okre¶la typ pliku wykonywalnego PE Microsoftu (natywny,
-.NET CLR) i uruchamia odpowiednie ¶rodowisko wykonawcze (Wine, Mono).
+%description -l pl.UTF-8
+To narzÄ™dzie okreÅ›la typ pliku wykonywalnego PE Microsoftu (natywny,
+.NET CLR) i uruchamia odpowiednie Å›rodowisko wykonawcze (Wine, Mono).
 
-Jest u¿ywane w po³±czeniu z linuksowym binfmt, poniewa¿ samo binfmt
-nie jest w stanie odró¿niæ ró¿nych typów plików PE (nie zawieraj± one
-ró¿nych "magicznych ci±gów"), a ¶rodowiska uruchomieniowe nie
-pozwalaj± uruchomiæ nieobs³ugiwanych przez siebie plików (CLR nie
-uruchamia natywnych obrazów i vice versa).
+Jest uÅ¼ywane w poÅ‚Ä…czeniu z linuksowym binfmt, poniewaÅ¼ samo binfmt
+nie jest w stanie odrÃ³Å¼niÄ‡ rÃ³Å¼nych typÃ³w plikÃ³w PE (nie zawierajÄ… one
+rÃ³Å¼nych "magicznych ciÄ…gÃ³w"), a Å›rodowiska uruchomieniowe nie
+pozwalajÄ… uruchomiÄ‡ nieobsÅ‚ugiwanych przez siebie plikÃ³w (CLR nie
+uruchamia natywnych obrazÃ³w i vice versa).
 
 %prep
 %setup -q -n %{name}
