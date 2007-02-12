@@ -1,5 +1,5 @@
 Summary:	Microsoft PE executable type detector
-Summary(pl.UTF-8):   Detector typu plików wykonywalnych PE Microsoftu
+Summary(pl.UTF-8):	Detector typu plików wykonywalnych PE Microsoftu
 Name:		binfmt-detector
 Version:	0.1
 Release:	3
