@@ -17,7 +17,7 @@
 
 BINFMT_DIR='/proc/sys/fs/binfmt_misc'
 
-[ ! -e "$BINFMT_DIR" ] && exit 0
+[ ! -e "$BINFMT_DIR/register" ] && exit 0
 
 start() {
 	if [ ! -f /var/lock/subsys/binfmt-detector ]; then
