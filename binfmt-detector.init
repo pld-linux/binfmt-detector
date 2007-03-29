@@ -17,15 +17,13 @@
 
 BINFMT_DIR='/proc/sys/fs/binfmt_misc'
 
-[ ! -e "$BINFMT_DIR/register" ] && exit 0
-
 start() {
 	if [ ! -f /var/lock/subsys/binfmt-detector ]; then
 		# check if binfmt_misc is not already mounted
 		if ! /bin/mount | grep -q "${BINFMT_DIR} type binfmt_misc"; then
 			/bin/mount none -t binfmt_misc ${BINFMT_DIR}
 		fi
-		msg_starting 'binfmt-detector'
+		msg_starting 'binfmt-detector'/proc/sys/fs/binfmt_misc
 		echo ':windows:M::MZ::/usr/bin/binfmt-detector.sh:' > ${BINFMT_DIR}/register
 		echo ':windowsPE:M::PE::/usr/bin/binfmt-detector.sh:' > ${BINFMT_DIR}/register
 		ok
