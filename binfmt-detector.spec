@@ -11,7 +11,7 @@ Source1:	%{name}.init
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
-Conflicts:	wine <= 1:0.9.12-1
+Conflicts:	wine < 1:0.9.12-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
