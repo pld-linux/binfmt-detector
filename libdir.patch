@@ -1,0 +1,22 @@
+--- binfmt-detector/binfmt-detector.sh~	2007-05-06 13:41:34.000000000 +0300
++++ binfmt-detector/binfmt-detector.sh	2009-11-22 11:28:37.838632670 +0200
+@@ -1,15 +1,13 @@
+ #!/bin/sh
+ 
+-if [ ! -f "$1" ]
+-then
+-	echo "$1: no such file" >&2
++if [ ! -f "$1" ]; then
++	echo >&2 "$1: No such file"
+ 	exit 1
+ fi
+ 
+-/usr/bin/binfmt-detector-cli "$1"
++/usr/lib/binfmt-detector "$1"
+ 
+-if [ $? -eq 0 ]
+-then
++if [ $? -eq 0 ]; then
+ 	exec /usr/bin/mono "$@"
+ else
+ 	exec /usr/bin/wine "$@"
