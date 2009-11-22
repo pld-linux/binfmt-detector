@@ -1,0 +1,11 @@
+--- binfmt-detector/README~	2006-05-01 17:17:13.000000000 +0300
++++ binfmt-detector/README	2009-11-22 11:25:26.629347349 +0200
+@@ -27,7 +27,7 @@
+ 	  the executable file.
+ 	- A native executable file is assumed otherwise.
+ 	
+-	The runtime names are hardcoded into the utilit (that is -
++	The runtime names are hardcoded into the utility (that is -
+ 	not configurable) and are exec'ed from the utility --
+ 	"wine" is used for native images, "cli" is used for CLR images.
+ 
