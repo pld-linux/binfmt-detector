@@ -81,6 +81,15 @@ case "$1" in
 	condrestart 7
 	;;
   status)
+	if [ ! -f /var/lock/subsys/binfmt-detector ]; then
+		msg_not_running "binfmt detector"
+		exit 1
+	fi
+	for fmt in windows windowsPE; do
+		printf "%s: %s; %s: %s\n" $fmt \
+			$(grep -E '(disabled|enabled)' $BINFMT_DIR/$fmt) \
+			$(grep -E 'interpreter' $BINFMT_DIR/$fmt)
+	done
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|try-restart|force-reload|status}"
