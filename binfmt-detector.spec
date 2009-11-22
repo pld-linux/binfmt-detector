@@ -2,13 +2,16 @@ Summary:	Microsoft PE executable type detector
 Summary(pl.UTF-8):	Detector typu plików wykonywalnych PE Microsoftu
 Name:		binfmt-detector
 Version:	0.2
-Release:	2
+Release:	3
 License:	GPL
 Group:		Base
 Source0:	http://team.pld-linux.org/~wolf/%{name}.tar.gz
 # Source0-md5:	d6e9d6d8888b58c97eb65875853fd778
 Source1:	%{name}.init
+Patch0:		spelling.patch
+Patch1:		libdir.patch
 BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 Conflicts:	wine < 1:0.9.12-2
@@ -37,18 +40,20 @@ uruchamia natywnych obrazów i vice versa).
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1
+%patch1 -p1
 
 %build
-%{__cc} %{rpmcflags} binfmt-detector-cli.c -o binfmt-detector-cli
+%{__cc} %{rpmldflags} %{rpmcflags} binfmt-detector-cli.c -o binfmt-detector
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},/etc/rc.d/init.d}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},/etc/rc.d/init.d}
 
-install binfmt-detector-cli $RPM_BUILD_ROOT%{_bindir}
-install binfmt-detector.sh $RPM_BUILD_ROOT%{_bindir}
-
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/binfmt-detector
+install -p binfmt-detector $RPM_BUILD_ROOT%{_libdir}
+install -p binfmt-detector.sh $RPM_BUILD_ROOT%{_bindir}/binfmt-detector
+sed -i -e 's,/usr/lib,%{_libdir},' $RPM_BUILD_ROOT%{_bindir}/binfmt-detector
+install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/binfmt-detector
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -66,5 +71,6 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README
-%attr(755,root,root) %{_bindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/binfmt-detector
+%attr(755,root,root) %{_bindir}/binfmt-detector
+%attr(755,root,root) %{_libdir}/binfmt-detector
