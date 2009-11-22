@@ -1,59 +1,70 @@
 #!/bin/sh
 # $Id$
 #
-# binfmt-detector:	Microsoft PE executable type detector. User can run
-#			programs using Wine or Mono simply by clicking on them
-#			or typing ./file.exe
+# binfmt-detector:	Microsoft PE executable type detector.
 #
-# chkconfig:	2345 95 10
+# chkconfig:	2345 95 05
 #
-# description:	Microsoft PE executable type detector. User can run
-#		programs using Wine or Mono simply by clicking on them
+# description:	Microsoft PE executable type detector. User can run \
+#		programs using Wine or Mono simply by clicking on them \
 #		or typing ./file.exe
 #
 
 # Source function library
 . /etc/rc.d/init.d/functions
 
-BINFMT_DIR='/proc/sys/fs/binfmt_misc'
+BINFMT_DIR=/proc/sys/fs/binfmt_misc
 
-[ ! -d "$BINFMT_DIR" ] && exit 0
+[ -d $BINFMT_DIR ] || exit 0
 
 start() {
-	if [ ! -f /var/lock/subsys/binfmt-detector ]; then
-		# check if binfmt_misc is not already mounted
-		if ! grep -q "${BINFMT_DIR}" /proc/mounts; then
-			/bin/mount none -t binfmt_misc ${BINFMT_DIR}
-		fi
-		msg_starting 'binfmt-detector'
-		if [ -e "$BINFMT_DIR/register" ]; then
-			echo ':windows:M::MZ::/usr/bin/binfmt-detector.sh:' > ${BINFMT_DIR}/register
-			echo ':windowsPE:M::PE::/usr/bin/binfmt-detector.sh:' > ${BINFMT_DIR}/register
-			ok
-			touch /var/lock/subsys/binfmt-detector
-		else
-			fail
-		fi
+	if [ -f /var/lock/subsys/binfmt-detector ]; then
+		msg_already_running "binfmt detector"
+		return
+	fi
+
+	# check if binfmt_misc is not already mounted
+	if ! grep -q ${BINFMT_DIR} /proc/mounts; then
+		/bin/mount none -t binfmt_misc ${BINFMT_DIR}
+	fi
+	msg_starting "binfmt detector"
+	if [ -e "$BINFMT_DIR/register" ]; then
+		echo ':windows:M::MZ::/usr/bin/binfmt-detector:' > ${BINFMT_DIR}/register
+		echo ':windowsPE:M::PE::/usr/bin/binfmt-detector:' > ${BINFMT_DIR}/register
+		ok
+		touch /var/lock/subsys/binfmt-detector
 	else
-		msg_already_running 'binfmt-detector'
+		fail
 	fi
 }
 
 stop() {
-	if [ -f /var/lock/subsys/binfmt-detector ]; then
-		msg_stopping 'binfmt-detector'
-		echo '-1' > ${BINFMT_DIR}/windows
-		echo '-1' > ${BINFMT_DIR}/windowsPE
-		rm -f /var/lock/subsys/binfmt-detector
-		ok
-	else
-		msg_not_running 'binfmt-detector'
+	if [ ! -f /var/lock/subsys/binfmt-detector ]; then
+		msg_not_running "binfmt detector"
+		return
 	fi
+
+	msg_stopping "binfmt detector"
+	echo '-1' > ${BINFMT_DIR}/windows
+	echo '-1' > ${BINFMT_DIR}/windowsPE
+	rm -f /var/lock/subsys/binfmt-detector
+	ok
+}
+
+condrestart() {
+	if [ ! -f /var/lock/subsys/binfmt-detector ]; then
+		msg_not_running "binfmt-detector"
+		RETVAL=$1
+		return
+	fi
+
+	stop
+	start
 }
 
 RETVAL=0
 case "$1" in
-  start|reload|force-reload)
+  start|reload)
   	start
 	;;
   stop)
@@ -63,10 +74,16 @@ case "$1" in
     stop
     start
 	;;
+  try-restart)
+	condrestart 0
+	;;
+  force-reload)
+	condrestart 7
+	;;
   status)
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|reload|try-restart|force-reload|status}"
 	exit 3
 esac
 
