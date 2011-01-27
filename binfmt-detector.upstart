@@ -1,0 +1,21 @@
+description	"Microsoft PE executable type detector"
+
+start on virtual-filesystems
+
+task
+
+env BINFMT_DIR="/proc/sys/fs/binfmt_misc"
+
+script
+	if ! grep -q ${BINFMT_DIR} /proc/mounts; then
+		/bin/mount none -t binfmt_misc ${BINFMT_DIR} || :
+	fi
+
+	echo ':windows:M::MZ::/usr/bin/binfmt-detector:' > ${BINFMT_DIR}/register
+	echo ':windowsPE:M::PE::/usr/bin/binfmt-detector:' > ${BINFMT_DIR}/register
+end script
+
+post-stop script
+	[ -f ${BINFMT_DIR}/windows ] && echo '-1' > ${BINFMT_DIR}/windows
+	[ -f ${BINFMT_DIR}/windowsPE ] && echo '-1' > ${BINFMT_DIR}/windowsPE
+end script
