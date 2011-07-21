@@ -2,12 +2,13 @@ Summary:	Microsoft PE executable type detector
 Summary(pl.UTF-8):	Detector typu plików wykonywalnych PE Microsoftu
 Name:		binfmt-detector
 Version:	0.2
-Release:	3
+Release:	4
 License:	GPL
 Group:		Base
 Source0:	http://team.pld-linux.org/~wolf/%{name}.tar.gz
 # Source0-md5:	d6e9d6d8888b58c97eb65875853fd778
 Source1:	%{name}.init
+Source2:	binfmt-detector.upstart
 Patch0:		spelling.patch
 Patch1:		libdir.patch
 BuildRequires:	rpmbuild(macros) >= 1.268
@@ -48,12 +49,13 @@ uruchamia natywnych obrazów i vice versa).
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},/etc/rc.d/init.d}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},/etc/{rc.d/init.d,init}}
 
 install -p binfmt-detector $RPM_BUILD_ROOT%{_libdir}
 install -p binfmt-detector.sh $RPM_BUILD_ROOT%{_bindir}/binfmt-detector
 sed -i -e 's,/usr/lib,%{_libdir},' $RPM_BUILD_ROOT%{_bindir}/binfmt-detector
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/binfmt-detector
+cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/init/%{name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -71,6 +73,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README
-%attr(754,root,root) /etc/rc.d/init.d/binfmt-detector
-%attr(755,root,root) %{_bindir}/binfmt-detector
-%attr(755,root,root) %{_libdir}/binfmt-detector
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
+%attr(754,root,root) /etc/init/%{name}.conf
+%attr(755,root,root) %{_bindir}/%{name}
+%attr(755,root,root) %{_libdir}/%{name}
