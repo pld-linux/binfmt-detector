@@ -2,7 +2,7 @@ Summary:	Microsoft PE executable type detector
 Summary(pl.UTF-8):	Detector typu plików wykonywalnych PE Microsoftu
 Name:		binfmt-detector
 Version:	0.2
-Release:	4
+Release:	5
 License:	GPL
 Group:		Base
 Source0:	http://team.pld-linux.org/~wolf/%{name}.tar.gz
@@ -74,6 +74,6 @@ fi
 %defattr(644,root,root,755)
 %doc README
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
-%attr(754,root,root) /etc/init/%{name}.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/init/%{name}.conf
 %attr(755,root,root) %{_bindir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}
