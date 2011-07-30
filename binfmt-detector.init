@@ -13,6 +13,9 @@
 # Source function library
 . /etc/rc.d/init.d/functions
 
+# disabled because: seems the mountpoint is namespaced, i.e not visible outside upstart process
+#upstart_controlled --except status
+
 BINFMT_DIR=/proc/sys/fs/binfmt_misc
 
 [ -d $BINFMT_DIR ] || exit 0
