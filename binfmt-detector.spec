@@ -14,7 +14,7 @@ Patch1:		libdir.patch
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
-Requires:	rc-scripts
+Requires:	rc-scripts >= 0.4.3.0
 Conflicts:	wine < 1:0.9.12-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
